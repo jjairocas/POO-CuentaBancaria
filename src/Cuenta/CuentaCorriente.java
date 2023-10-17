@@ -45,7 +45,7 @@ public class CuentaCorriente extends Cuenta{
         System.out.println("Saldo = $ "+saldo);
         System.out.println("Cargo mensual = $ "+comisionMensual);
         System.out.println("Numero de transacciones = "+(numeroConsignaciones+numeroRetiros));
-        System.out.println("Valor de sobregiro = $"+(numeroConsignaciones+numeroRetiros));
+        System.out.println("Valor de sobregiro = $"+(sobregiro));
         System.out.println();
 
     }

@@ -18,12 +18,25 @@ public class CuentaUI extends JFrame {
     private JButton btnborrarAH;
     private JButton btnconsignarAH;
     private JButton btndepositarAH;
-    private JButton retirarButton;
+    private JButton btnretirarAH;
+    private JButton btnDepositoInicial;
+    private JButton btnretirarCORR;
+    private JTextField txtSaldoCOR;
+    private JButton btnextracto;
+    private JTextField txtComisionCORR;
+    private JTextField txtCantidadTransacionesCOR;
+    private JTextField txtValorSobregiro;
+    private JButton btnButton;
+    private JButton btnsalir;
+    private JTextField txtTasaCorriente;
+    private JTextField txtValorConsignacion;
+    private JTextField txtValorRetiro;
+    private JButton btndepositarCORR;
 
     public CuentaUI()  {
         setContentPane(MainPanel);
         setTitle("Manejo de Cuentas");     //Titulo Ventana
-        setSize(500, 350);      //Tamaño ventana
+        setSize(900, 350);      //Tamaño ventana
         setLocationRelativeTo(null);        //La ventana se posiciona en el centro
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);    //El boton cerrar cierra la ventana
         //setResizable(false);                //La ventana no se puede cambiar de tamaño
@@ -34,7 +47,6 @@ public class CuentaUI extends JFrame {
         btnconsignarAH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
 
                 try{
                     float SaldoInicialAH,tasaAhorrosAH;
@@ -66,12 +78,10 @@ public class CuentaUI extends JFrame {
                                         JOptionPane.ERROR_MESSAGE);
                             }
 
-
-
                         }
                     });
 
-                    retirarButton.addActionListener(new ActionListener() {
+                    btnretirarAH.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             float cantidadRetirar;
@@ -135,7 +145,110 @@ public class CuentaUI extends JFrame {
             }
         });
 
+        //SECCION CUENTA CORRIENTE
 
+
+        btnDepositoInicial.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try{
+                    float SaldoCORR,TasaCorriente;
+
+                    SaldoCORR=Float.parseFloat(txtValorConsignacion.getText());
+                    TasaCorriente=Float.parseFloat(txtTasaCorriente.getText());
+
+                    CuentaCorriente CuentaUsuarioCorriente=new CuentaCorriente(SaldoCORR,TasaCorriente);
+
+                    txtValorConsignacion.setText("");
+                    txtTasaCorriente.setText("");
+
+                    btndepositarCORR.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            try{
+                                float SaldoConsignCorr=Float.parseFloat((txtValorConsignacion.getText()));
+                                CuentaUsuarioCorriente.consignar(SaldoConsignCorr);
+
+                                txtValorConsignacion.setText("");
+                                txtTasaCorriente.setText("");
+
+                            }
+                            catch (NumberFormatException exception){
+                                JOptionPane.showMessageDialog(null, "Ya ingresaste datos iniciales, dale en salir e inicializa de nuevo el programa", "Datos iniciales ya ingresados",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        }
+                    });
+
+                    btnretirarCORR.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            float ValorRetiroCORR=Float.parseFloat(txtValorRetiro.getText());
+                            CuentaUsuarioCorriente.retirar(ValorRetiroCORR);
+
+                            txtValorConsignacion.setText("");
+                            txtTasaCorriente.setText("");
+                            txtValorRetiro.setText("");
+
+                        }
+                    });
+
+                    btnextracto.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            CuentaUsuarioCorriente.extractoMensual();
+
+                            float SaldoCORR=CuentaUsuarioCorriente.saldo;
+                            float CargoMensCORR=CuentaUsuarioCorriente.comisionMensual;
+                            float NumTransaccCORR=(CuentaUsuarioCorriente.numeroConsignaciones+(CuentaUsuarioCorriente.numeroRetiros));
+                            float ValorSobregiroCORR=((CuentaUsuarioCorriente.sobregiro));
+
+
+                            txtSaldoCOR.setText(String.valueOf(SaldoCORR));
+                            txtComisionCORR.setText(String.valueOf(CargoMensCORR));
+                            txtCantidadTransacionesCOR.setText(String.valueOf(NumTransaccCORR));
+                            txtValorSobregiro.setText(String.valueOf(ValorSobregiroCORR));
+
+                        }
+                    });
+
+                    btnButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            txtValorConsignacion.setText("");
+                            txtTasaCorriente.setText("");
+                            txtValorRetiro.setText("");
+                            txtSaldoCOR.setText("");
+                            txtCantidadTransacionesCOR.setText("");
+                            txtComisionCORR.setText("");
+                            txtValorSobregiro.setText("");
+
+                        }
+                    });
+
+
+                }
+                catch (NumberFormatException exception){
+                    JOptionPane.showMessageDialog(null, "Nos has ingresado ningun dato o te faltan datos", "Error de Datos",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+
+
+            }
+        });
+
+
+        btnsalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
     }
 
 }
